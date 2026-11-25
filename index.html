@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'"><!--CSP-->
+<title>Arbitration Rejection Letter</title>
+<style>
+/* Layout idea: a clerk's desk. Form on the left, the paper letter and envelope on the right; one column on phones. */
+:root{
+  --desk:#e9edf2; --surface:#ffffff; --ink:#16233a; --muted:#5b6880; --rule:#c9d1dd;
+  --accent:#1f5fa8; --accent-ink:#ffffff; --warn:#a4380f; --warn-bg:#fdeee6; --ok:#1d6b45;
+  --display: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --body: system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --desk:#111823; --surface:#1a2332; --ink:#e6ebf3; --muted:#9aa7bc; --rule:#33415a;
+    --accent:#7db3ee; --accent-ink:#0d1622; --warn:#ffb48f; --warn-bg:#3a2218; --ok:#7fd3a6;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --desk:#111823; --surface:#1a2332; --ink:#e6ebf3; --muted:#9aa7bc; --rule:#33415a;
+  --accent:#7db3ee; --accent-ink:#0d1622; --warn:#ffb48f; --warn-bg:#3a2218; --ok:#7fd3a6;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--desk);color:var(--ink);font:16px/1.5 var(--body)}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 16px 56px;display:flex;flex-direction:column;gap:20px}
+header h1{font:600 clamp(1.6rem,4.5vw,2.25rem)/1.15 var(--display);margin:0 0 8px;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:65ch}
+.deadline{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;background:var(--warn-bg);color:var(--warn);
+  border-left:4px solid var(--warn);padding:12px 14px;border-radius:4px}
+.deadline strong{font-variant-numeric:tabular-nums}
+.privacy{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0;font-size:.85rem}
+.privacy li{border:1px solid var(--rule);border-radius:999px;padding:3px 10px;color:var(--muted);background:var(--surface)}
+.cols{display:grid;gap:20px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.cols{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.right{display:flex;flex-direction:column;gap:20px;min-width:0}
+h2{font:600 1.2rem/1.2 var(--display);margin:0}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+legend{font:600 .78rem/1 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0;margin-bottom:10px}
+.row{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+@media (min-width:480px){.row.two{grid-template-columns:2fr 1fr}.row.csz{grid-template-columns:2fr 1fr 1fr}}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+label,.lab{font-size:.9rem;font-weight:600}
+.opt{font-weight:400;color:var(--muted)}
+input[type=text],input[type=tel],input[type=date],select{
+  width:100%;min-height:44px;padding:9px 11px;font:inherit;color:var(--ink);background:var(--surface);
+  border:1px solid var(--rule);border-radius:6px}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+input[aria-invalid=true],select[aria-invalid=true]{border-color:var(--warn);border-width:2px}
+.err{color:var(--warn);font-size:.85rem;min-height:0}
+.hint{color:var(--muted);font-size:.85rem;margin:0}
+.choice{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--rule);border-radius:6px;padding:10px 12px;cursor:pointer}
+.choice input{margin-top:4px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.choice span{font-weight:400}.choice b{display:block}
+.acct{display:grid;gap:8px;grid-template-columns:minmax(0,1fr) auto;border:1px dashed var(--rule);border-radius:6px;padding:10px}
+.acct .field:nth-child(2){grid-column:1}
+.acct input.num{font-family:var(--mono);letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.masking input.num:not(:focus){-webkit-text-security:disc;text-security:disc}
+button{font:inherit;cursor:pointer;border-radius:6px;min-height:44px;padding:9px 14px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700;font-size:1.05rem;padding:12px 18px}
+button.rm{grid-row:1;grid-column:2;align-self:end}
+button.link{border:0;background:none;color:var(--accent);padding:0;min-height:0;text-decoration:underline}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.check{display:flex;gap:8px;align-items:center;font-size:.9rem;font-weight:400}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+#status{font-size:.92rem;min-height:1.4em}
+#status.bad{color:var(--warn)}#status.good{color:var(--ok)}
+/* Paper objects keep paper colors in both themes */
+.paper{background:#fff;border:1px solid #c9d1dd;box-shadow:0 2px 10px rgba(10,20,40,.18);border-radius:2px;display:block;width:100%;height:auto}
+.pages{display:flex;flex-direction:column;gap:14px}
+.envelope{position:relative;aspect-ratio:9.5/4.125;background:#fbfbf8;color:#16233a;border:1px solid #c9d1dd;border-radius:4px;
+  box-shadow:0 2px 10px rgba(10,20,40,.18);font:clamp(9px,2.3vw,13px)/1.35 var(--mono);overflow:hidden;container-type:inline-size}
+@media (min-width:900px){.envelope{font-size:12px}}
+.envelope .from{position:absolute;left:5%;top:9%;max-width:52%;white-space:pre-line;overflow-wrap:anywhere}
+.envelope .to{position:absolute;left:40%;top:48%;font-weight:700;white-space:pre-line;font-size:1.12em}
+.envelope .stamp{position:absolute;right:4%;top:8%;width:11%;aspect-ratio:.86;border:1.5px dashed #8a97ad;color:#5b6880;
+  display:flex;align-items:center;justify-content:center;text-align:center;font-size:.72em;line-height:1.15}
+.ph{color:#8a97ad}
+ol.steps{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+footer{color:var(--muted);font-size:.85rem;max-width:75ch}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Reject Capital One's arbitration agreement by mail</h1>
+    <p>Fill in the form, download the letter as a PDF, print it, sign it by hand and mail it. The letter contains everything Capital One's notice says a rejection must include: your name, address, phone number, account numbers and personal signature.</p>
+  </header>
+
+  <div class="deadline" role="note">
+    <span>Capital One must <b>receive</b> your letter by <strong>February 22, 2027</strong>.</span>
+    <span id="daysLeft"></span>
+  </div>
+
+  <ul class="privacy" aria-label="Privacy">
+    <li>Runs entirely in your browser</li>
+    <li>Nothing is uploaded or sent</li>
+    <li>Nothing is saved between visits</li>
+    <li>No trackers, no outside scripts</li>
+  </ul>
+
+  <div class="cols">
+    <form class="panel masking" id="form" novalidate autocomplete="off">
+      <h2>Your details</h2>
+
+      <fieldset>
+        <legend>Name and contact</legend>
+        <div class="field">
+          <label for="name">Full name, as it appears on your accounts</label>
+          <input type="text" id="name" maxlength="80" autocomplete="off" spellcheck="false" required>
+          <div class="err" id="name-err"></div>
+        </div>
+        <div class="row two">
+          <div class="field">
+            <label for="street">Street address</label>
+            <input type="text" id="street" maxlength="80" autocomplete="off" spellcheck="false" required>
+            <div class="err" id="street-err"></div>
+          </div>
+          <div class="field">
+            <label for="unit">Apt / unit <span class="opt">(optional)</span></label>
+            <input type="text" id="unit" maxlength="30" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="row csz">
+          <div class="field">
+            <label for="city">City</label>
+            <input type="text" id="city" maxlength="50" autocomplete="off" spellcheck="false" required>
+            <div class="err" id="city-err"></div>
+          </div>
+          <div class="field">
+            <label for="state">State</label>
+            <select id="state" required><option value="">Select</option></select>
+            <div class="err" id="state-err"></div>
+          </div>
+          <div class="field">
+            <label for="zip">ZIP code</label>
+            <input type="text" id="zip" inputmode="numeric" maxlength="10" autocomplete="off" required>
+            <div class="err" id="zip-err"></div>
+          </div>
+        </div>
+        <div class="row two">
+          <div class="field">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" maxlength="24" autocomplete="off" required>
+            <div class="err" id="phone-err"></div>
+          </div>
+          <div class="field">
+            <label for="date">Letter date</label>
+            <input type="date" id="date" required>
+            <div class="err" id="date-err"></div>
+          </div>
+        </div>
+        <div class="field">
+          <label for="joint">Joint account holder who will also sign <span class="opt">(optional)</span></label>
+          <input type="text" id="joint" maxlength="80" autocomplete="off" spellcheck="false">
+          <p class="hint">Adds a second signature line.</p>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>What the rejection covers</legend>
+        <label class="choice"><input type="radio" name="scope" id="scopeAll" value="all" checked>
+          <span><b>All Accounts</b>Every existing Capital One account you hold. Capital One still needs at least one account number to find you.</span></label>
+        <label class="choice"><input type="radio" name="scope" id="scopeListed" value="listed">
+          <span><b>Only the accounts I list</b>The rejection applies to the listed account numbers and no others.</span></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Account numbers</legend>
+        <p class="hint" id="acctHint"></p>
+        <div id="accts" style="display:flex;flex-direction:column;gap:10px"></div>
+        <div class="err" id="accts-err"></div>
+        <div class="actions">
+          <button type="button" id="addAcct">+ Add another account</button>
+          <label class="check"><input type="checkbox" id="mask" checked> Hide numbers on screen</label>
+        </div>
+        <p class="hint">Hidden numbers show only while you type in a field. The PDF always prints them in full, so check each one against your statement.</p>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" class="primary" id="go">Download letter (PDF)</button>
+        <button type="button" id="clear">Clear everything</button>
+      </div>
+      <div id="status" role="status" aria-live="polite"></div>
+    </form>
+
+    <div class="right">
+      <section class="panel">
+        <h2>Your letter</h2>
+        <p class="hint">Live preview. Grey text in brackets is still missing.</p>
+        <div class="pages" id="pages"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Your envelope</h2>
+        <div class="envelope" aria-label="Envelope addressed to Capital One - Arbitration, P.O. Box 85123, Richmond, VA 23285">
+          <div class="from" id="envFrom"></div>
+          <div class="stamp">Place<br>stamp<br>here</div>
+          <div class="to" id="envTo">Capital One - Arbitration
+P.O. Box 85123
+Richmond, VA 23285</div>
+        </div>
+        <div class="actions">
+          <button type="button" id="copyAddr">Copy mailing address</button>
+          <span class="hint" id="copyMsg" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Before you mail it</h2>
+        <ol class="steps">
+          <li>Print the PDF and compare every account number with your statements.</li>
+          <li>Sign above your printed name in ink. A typed name is not a personal signature.</li>
+          <li>Keep a copy or photo of the signed letter.</li>
+          <li>Address the envelope exactly as shown and mail it early. The deadline is the day Capital One receives it, not the postmark date.</li>
+          <li>For proof of delivery, ask the post office for Certified Mail with a return receipt and keep the tracking number.</li>
+        </ol>
+        <p class="hint">Per Capital One's notice, the rejection covers existing accounts only, not accounts you open later, and does not change your other rights or responsibilities.</p>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    This is an independent tool. It is not affiliated with or endorsed by Capital One, and it is not legal advice. Check the mailing address, deadline and requirements against the notice and agreement Capital One sent you; if they differ, follow yours.
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ===== CORE (no DOM): text safety, layout, PDF ===== */
+var DEADLINE = [2027, 1, 22]; // Feb 22, 2027
+var TO = ["Capital One - Arbitration", "P.O. Box 85123", "Richmond, VA 23285"];
+var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+// Helvetica advance widths for chars 32..126 (Adobe AFM)
+var HW = [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+
+// Reduce any input to printable Latin-1 that the PDF's WinAnsi fonts can draw.
+function pdfSafe(s) {
+  s = String(s == null ? "" : s).normalize("NFC")
+    .replace(/[‘’‚′]/g, "'").replace(/[“”„″]/g, '"')
+    .replace(/[‐-―−]/g, "-").replace(/…/g, "...")
+    .replace(/[\u0000-\u001F\u007F-\u009F ­]/g, " ");
+  var out = "";
+  for (var i = 0; i < s.length; i++) {
+    var c = s.charCodeAt(i);
+    if ((c >= 32 && c < 127) || (c >= 161 && c <= 255)) { out += s[i]; continue; }
+    var b = s[i].normalize("NFD").charCodeAt(0);
+    out += (b >= 32 && b < 127) ? String.fromCharCode(b) : (c >= 0xDC00 && c <= 0xDFFF ? "" : "?");
+  }
+  return out.replace(/\s+/g, " ").trim();
+}
+function chW(ch) {
+  var c = ch.charCodeAt(0);
+  if (c >= 32 && c < 127) return HW[c - 32];
+  var b = ch.normalize("NFD").charCodeAt(0);
+  return (b >= 32 && b < 127) ? HW[b - 32] : 556;
+}
+function textW(s, size) { var w = 0; for (var i = 0; i < s.length; i++) w += chW(s[i]); return w * size / 1000; }
+function wrap(s, size, maxW) {
+  var words = s.split(" "), lines = [], cur = "";
+  words.forEach(function (w) {
+    var t = cur ? cur + " " + w : w;
+    if (textW(t, size) <= maxW || !cur) cur = t; else { lines.push(cur); cur = w; }
+    while (textW(cur, size) > maxW && cur.length > 1) { // break a single over-long word
+      var n = cur.length; while (n > 1 && textW(cur.slice(0, n), size) > maxW) n--;
+      lines.push(cur.slice(0, n)); cur = cur.slice(n);
+    }
+  });
+  if (cur) lines.push(cur);
+  return lines;
+}
+function fmtDate(iso) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+  return m ? MONTHS[+m[2] - 1] + " " + (+m[3]) + ", " + m[1] : "";
+}
+function maskNum(n) { var d = n.replace(/[^A-Za-z0-9]/g, ""); return "•••• " + d.slice(-4); }
+
+// d: {name,street,unit,city,state,zip,phone,date,joint,scope,accts:[{num,label}]}; opts.mask hides numbers (preview only)
+function layout(d, opts) {
+  opts = opts || {};
+  var L = 72, W = 468, SZ = 11, LH = 15, BOTTOM = 744;
+  var pages = [], ops, y;
+  function newPage() { ops = []; pages.push(ops); y = 72; }
+  function ensure(h) { if (y + h > BOTTOM) newPage(); }
+  function line(s, o) { o = o || {}; ensure(LH); ops.push({ t: "text", x: L + (o.indent || 0), y: y, size: o.size || SZ, bold: !!o.bold, ph: !!o.ph, s: s }); y += LH; }
+  function val(v, placeholder, o) { if (v) line(v, o); else { o = o || {}; o.ph = true; line("[" + placeholder + "]", o); } }
+  function para(s, o) { o = o || {}; wrap(s, SZ, W - (o.indent || 0)).forEach(function (l) { line(l, o); }); }
+  function gap(n) { y += LH * (n == null ? 1 : n); }
+  var street = d.street ? d.street + (d.unit ? ", " + d.unit : "") : "";
+  var csz = (d.city || d.state || d.zip) ? [d.city ? d.city + "," : "", d.state, d.zip].filter(Boolean).join(" ") : "";
+  var all = d.scope !== "listed";
+  var many = d.accts.length !== 1;
+  newPage();
+  val(d.name, "Your full name"); val(street, "Street address"); val(csz, "City, State ZIP"); val(d.phone, "Phone number");
+  gap(); val(fmtDate(d.date), "Date");
+  gap(); TO.forEach(function (l) { line(l); });
+  gap(); line("Re: Notice of Rejection of Arbitration Agreement", { bold: true });
+  gap(); line("To Capital One:");
+  gap(.5);
+  para("This is my written notice of rejection. I reject the agreement to arbitrate (the Arbitration Agreement) in my Capital One Agreement(s). I do not agree to arbitration, and the agreement to arbitrate should not become part of my Capital One Agreement(s).");
+  gap(.5);
+  if (all) {
+    line("This rejection applies to: All Accounts.", { bold: true });
+    para("It covers every existing account I have with Capital One. So that you can identify my account relationship, my account number" + (many ? "s include" : " is") + ":");
+  } else {
+    para("This rejection applies to the following account" + (many ? "s" : "") + ":");
+  }
+  gap(.3);
+  if (!d.accts.length) line("[Account number]", { indent: 18, ph: true });
+  d.accts.forEach(function (a) {
+    var num = opts.mask ? maskNum(a.num) : a.num;
+    para("Account number: " + num + (a.label ? " (" + a.label + ")" : ""), { indent: 18 });
+  });
+  gap(.7);
+  ensure(LH * 5);
+  line("My information:");
+  [["Name: ", d.name, "Your full name"], ["Address: ", [street, csz].filter(Boolean).join(", "), "Your address"], ["Phone number: ", d.phone, "Phone number"]]
+    .forEach(function (r) { if (r[1]) para(r[0] + r[1], { indent: 18 }); else line(r[0] + "[" + r[2] + "]", { indent: 18, ph: true }); });
+  gap(.7);
+  para("My personal signature is below. Please confirm in writing, at the address above, that you received this notice and that the agreement to arbitrate is not part of my Capital One Agreement(s).");
+  gap(.7);
+  var signers = [d.name || ""].concat(d.joint ? [d.joint] : []);
+  ensure(LH * 2 + signers.length * 78);
+  line("Sincerely,");
+  signers.forEach(function (n, i) {
+    y += 36;
+    ops.push({ t: "rule", x1: L, x2: L + 250, y: y });
+    y += 14;
+    if (n) line(n); else line("[Your full name]", { ph: true });
+    ops.push({ t: "text", x: L, y: y - 2, size: 8.5, bold: false, ph: false, s: i === 0 ? "Signature of account holder" : "Signature of joint account holder" });
+    y += 12;
+  });
+  return pages;
+}
+
+function buildPdf(pages) {
+  function hex(s) { var h = ""; for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); h += (c < 256 ? c : 63).toString(16).padStart(2, "0"); } return h; }
+  var objs = [];
+  var n = pages.length, kids = [];
+  objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+  objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+  objs[5] = "<< /Title (Notice of Rejection of Arbitration Agreement) /Producer (Arbitration Rejection Letter) >>";
+  pages.forEach(function (ops, i) {
+    var c = "0 g 0 G 0.75 w\n";
+    ops.forEach(function (o) {
+      if (o.t === "text") c += "BT /F" + (o.bold ? 2 : 1) + " " + o.size + " Tf " + o.x + " " + (792 - o.y).toFixed(2) + " Td <" + hex(o.s) + "> Tj ET\n";
+      else c += o.x1 + " " + (792 - o.y).toFixed(2) + " m " + o.x2 + " " + (792 - o.y).toFixed(2) + " l S\n";
+    });
+    var pid = 6 + i * 2, cid = pid + 1;
+    kids.push(pid + " 0 R");
+    objs[pid] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents " + cid + " 0 R >>";
+    objs[cid] = "<< /Length " + c.length + " >>\nstream\n" + c + "endstream";
+  });
+  objs[2] = "<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + n + " >>";
+  var out = "%PDF-1.4\n", offs = [];
+  for (var i = 1; i < objs.length; i++) { offs[i] = out.length; out += i + " 0 obj\n" + objs[i] + "\nendobj\n"; }
+  var xref = out.length;
+  out += "xref\n0 " + objs.length + "\n0000000000 65535 f \n";
+  for (i = 1; i < objs.length; i++) out += String(offs[i]).padStart(10, "0") + " 00000 n \n";
+  out += "trailer\n<< /Size " + objs.length + " /Root 1 0 R /Info 5 0 R >>\nstartxref\n" + xref + "\n%%EOF\n";
+  var bytes = new Uint8Array(out.length);
+  for (i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255; // content is pure ASCII
+  return bytes;
+}
+/* ===== END CORE ===== */
+
+if (typeof document !== "undefined") (function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var STATES = "AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY PR VI GU AS MP AA AE AP".split(" ");
+  var form = $("form"), accts = $("accts"), acctSeq = 0, claudeDl = null;
+
+  STATES.forEach(function (s) { var o = document.createElement("option"); o.value = s; o.textContent = s; $("state").appendChild(o); });
+
+  function today() { var t = new Date(); return t.getFullYear() + "-" + String(t.getMonth() + 1).padStart(2, "0") + "-" + String(t.getDate()).padStart(2, "0"); }
+  $("date").value = today();
+
+  (function () {
+    var t = new Date(), a = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate()), b = Date.UTC(DEADLINE[0], DEADLINE[1], DEADLINE[2]);
+    var days = Math.round((b - a) / 864e5);
+    $("daysLeft").textContent = days > 1 ? days + " days left. Mail it well before then." : days === 1 ? "That is tomorrow." : days === 0 ? "That is today." : "That date has passed. Check your notice before mailing.";
+  })();
+
+  function el(tag, attrs, text) { var e = document.createElement(tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (text != null) e.textContent = text; return e; }
+
+  function addAcct(focus) {
+    var id = ++acctSeq, row = el("div", { "class": "acct" });
+    var f1 = el("div", { "class": "field" });
+    f1.appendChild(el("label", { "for": "acct" + id }, "Account number"));
+    var num = el("input", { type: "text", id: "acct" + id, "class": "num", inputmode: "numeric", maxlength: "34", autocomplete: "off", autocorrect: "off", autocapitalize: "off", spellcheck: "false", "data-lpignore": "true", "data-1p-ignore": "true" });
+    f1.appendChild(num);
+    f1.appendChild(el("div", { "class": "err", id: "acct" + id + "-err" }));
+    var f2 = el("div", { "class": "field" });
+    var lab = el("label", { "for": "acctl" + id }, "Account type ");
+    lab.appendChild(el("span", { "class": "opt" }, "(optional, e.g. 360 Checking)"));
+    f2.appendChild(lab);
+    f2.appendChild(el("input", { type: "text", id: "acctl" + id, "class": "lbl", maxlength: "40", autocomplete: "off", spellcheck: "false" }));
+    var rm = el("button", { type: "button", "class": "rm", "aria-label": "Remove this account" }, "Remove");
+    rm.addEventListener("click", function () { row.remove(); if (!accts.children.length) addAcct(); sync(); });
+    row.appendChild(f1); row.appendChild(rm); row.appendChild(f2);
+    accts.appendChild(row);
+    if (focus) num.focus();
+    sync();
+  }
+
+  function read() {
+    var d = { scope: $("scopeListed").checked ? "listed" : "all", date: $("date").value, accts: [] };
+    ["name", "street", "unit", "city", "zip", "phone", "joint"].forEach(function (k) { d[k] = pdfSafe($(k).value); });
+    d.state = pdfSafe($("state").value);
+    accts.querySelectorAll(".acct").forEach(function (r) {
+      var num = pdfSafe(r.querySelector(".num").value), label = pdfSafe(r.querySelector(".lbl").value).replace(/[()]/g, "");
+      if (num || label) d.accts.push({ num: num, label: label, input: r.querySelector(".num") });
+    });
+    return d;
+  }
+
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function render() {
+    var d = read(), mask = $("mask").checked;
+    var pages = layout({ name: d.name, street: d.street, unit: d.unit, city: d.city, state: d.state, zip: d.zip, phone: d.phone, date: d.date, joint: d.joint, scope: d.scope,
+      accts: d.accts.filter(function (a) { return a.num; }) }, { mask: mask });
+    var host = $("pages"); host.textContent = "";
+    pages.forEach(function (ops, i) {
+      var svg = document.createElementNS(SVGNS, "svg");
+      svg.setAttribute("viewBox", "0 0 612 792"); svg.setAttribute("class", "paper"); svg.setAttribute("role", "img");
+      svg.setAttribute("aria-label", "Letter preview, page " + (i + 1) + " of " + pages.length);
+      ops.forEach(function (o) {
+        var n;
+        if (o.t === "text") {
+          n = document.createElementNS(SVGNS, "text");
+          n.setAttribute("x", o.x); n.setAttribute("y", o.y); n.setAttribute("font-size", o.size);
+          n.setAttribute("font-family", "Helvetica, Arial, sans-serif"); n.setAttribute("fill", o.ph ? "#8a97ad" : "#111");
+          if (o.bold) n.setAttribute("font-weight", "700");
+          n.textContent = o.s;
+        } else {
+          n = document.createElementNS(SVGNS, "line");
+          n.setAttribute("x1", o.x1); n.setAttribute("x2", o.x2); n.setAttribute("y1", o.y); n.setAttribute("y2", o.y);
+          n.setAttribute("stroke", "#111"); n.setAttribute("stroke-width", ".75");
+        }
+        svg.appendChild(n);
+      });
+      host.appendChild(svg);
+    });
+    // envelope return address
+    var from = $("envFrom"); from.textContent = "";
+    var street = d.street ? d.street + (d.unit ? ", " + d.unit : "") : "";
+    var csz = (d.city || d.state || d.zip) ? [d.city ? d.city + "," : "", d.state, d.zip].filter(Boolean).join(" ") : "";
+    [[d.name, "[Your name]"], [street, "[Street address]"], [csz, "[City, State ZIP]"]].forEach(function (p) {
+      var s = el("div", p[0] ? {} : { "class": "ph" }, p[0] || p[1]); from.appendChild(s);
+    });
+  }
+
+  function sync() {
+    form.classList.toggle("masking", $("mask").checked);
+    $("acctHint").textContent = $("scopeListed").checked
+      ? "List every account the rejection should cover. Accounts you leave out are not covered."
+      : "At least one is required. Adding all of them helps make sure every account is captured.";
+    render();
+  }
+
+  function setErr(id, msg) {
+    var input = $(id), e = $(id + "-err");
+    if (e) e.textContent = msg || "";
+    if (input) { if (msg) { input.setAttribute("aria-invalid", "true"); input.setAttribute("aria-describedby", id + "-err"); } else input.removeAttribute("aria-invalid"); }
+    return !msg;
+  }
+
+  function validate() {
+    var d = read(), first = null;
+    function chk(id, msg) { if (!setErr(id, msg) && !first) first = $(id); }
+    chk("name", d.name.length < 2 ? "Enter your full name." : "");
+    chk("street", !d.street ? "Enter your street address." : "");
+    chk("city", !d.city ? "Enter your city." : "");
+    chk("state", !d.state ? "Select your state." : "");
+    chk("zip", !/^\d{5}(-\d{4})?$/.test(d.zip) ? "Enter a 5-digit ZIP or ZIP+4." : "");
+    chk("phone", d.phone.replace(/\D/g, "").length < 10 || !/^[0-9+() .x\-]+$/i.test(d.phone) ? "Enter a phone number with area code." : "");
+    chk("date", !fmtDate(d.date) ? "Choose the date of the letter." : "");
+    accts.querySelectorAll(".num").forEach(function (i) { setErr(i.id, ""); });
+    var seen = {}, good = 0;
+    d.accts.forEach(function (a) {
+      var key = a.num.replace(/[^A-Za-z0-9]/g, "").toUpperCase(), msg = "";
+      if (!a.num) msg = "Add the account number or remove this row.";
+      else if (!/^[A-Za-z0-9][A-Za-z0-9 \-]*$/.test(a.num)) msg = "Use only letters, digits, spaces and hyphens.";
+      else if (key.replace(/\D/g, "").length < 4) msg = "That looks too short. Enter the full account number.";
+      else if (seen[key]) msg = "This number is listed twice.";
+      seen[key] = 1;
+      if (msg) chk(a.input.id, msg); else good++;
+    });
+    var none = !d.accts.length;
+    $("accts-err").textContent = none ? "Add at least one account number so Capital One can identify you." : "";
+    if (none && !first) first = accts.querySelector(".num");
+    if (first) { first.focus(); return null; }
+    d.accts = d.accts.map(function (a) { return { num: a.num, label: a.label }; });
+    return d;
+  }
+
+  function status(msg, cls) { var s = $("status"); s.textContent = msg; s.className = cls || ""; }
+
+  if (window.claude && typeof window.claude.use === "function") {
+    try { window.claude.use("downloads").then(function (n) { claudeDl = n; }, function () {}); } catch (e) {}
+  }
+
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var d = validate();
+    if (!d) { status("Some details need fixing before the letter can be made.", "bad"); return; }
+    var blob = new Blob([buildPdf(layout(d))], { type: "application/pdf" });
+    var filename = "capital-one-arbitration-rejection.pdf";
+    function viaLink() {
+      var url = URL.createObjectURL(blob), a = el("a", { href: url, download: filename });
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      status("Letter created on this device. Look in your downloads, then print and sign it.", "good");
+    }
+    if (claudeDl) {
+      claudeDl.save({ filename: filename, data: blob }).then(function () {
+        status("Letter saved. Print it and sign it by hand.", "good");
+      }, function (e) {
+        if (e && e.code === "declined") status("Download cancelled. Nothing was saved.", "");
+        else if (e && e.code === "rate_limited") status("A save prompt is already open. Answer it, then try again.", "bad");
+        else status("This view cannot save files. Open the page in a web browser to download the letter.", "bad");
+      });
+    } else viaLink();
+  });
+
+  $("clear").addEventListener("click", function () {
+    form.reset(); accts.textContent = ""; $("date").value = today();
+    form.querySelectorAll("[aria-invalid]").forEach(function (i) { i.removeAttribute("aria-invalid"); });
+    form.querySelectorAll(".err").forEach(function (e) { e.textContent = ""; });
+    status("Everything cleared.", ""); addAcct();
+  });
+  $("addAcct").addEventListener("click", function () { addAcct(true); });
+  $("copyAddr").addEventListener("click", function () {
+    var msg = $("copyMsg");
+    try { navigator.clipboard.writeText(TO.join("\n")).then(function () { msg.textContent = "Copied."; }, function () { msg.textContent = "Copy not allowed here. Select the address on the envelope instead."; }); }
+    catch (e) { msg.textContent = "Copy not allowed here. Select the address on the envelope instead."; }
+  });
+  form.addEventListener("input", sync);
+  form.addEventListener("change", sync);
+  addAcct();
+})();
+if (typeof module !== "undefined") module.exports = { layout: layout, buildPdf: buildPdf, pdfSafe: pdfSafe };
+</script>
+</body>
+</html>
